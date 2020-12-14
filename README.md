@@ -1,8 +1,14 @@
 # CIS450Project
 
-CIS 450 Project Milestone 2
 Bram Bruno, Paul Wei Zou, Phillip Sajaev, Paula Scanlan
 				
+Page 1: Get flights to Country with less than X amount of Covid cases 
+Page 2: Get flights that are available from source city to destination country, list all flights 
+Page 3: Get all airports from a country that is clicked on 
+Page 4: 
+Page 5: 
+
+
 Motivation for the idea/description of the problem the application solves
 We wanted to create this application to help people decide where to go when planning a vacation. Picking a place to travel is hard, so we will have the user tell us their nearest city so we can make recommendations based on that. We can also pull up flight info for them, so they can see all possible destinations and routes. This application is intended to help indecisive people make decisions and potentially learn more about new places they would have never thought about traveling to. 
  							
