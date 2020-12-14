@@ -2,11 +2,11 @@
 
 Bram Bruno, Paul Wei Zou, Phillip Sajaev, Paula Scanlan
 				
-Page 1: Get flights to Country with less than X amount of Covid cases \n
-Page 2: Get flights that are available from source country to destination country, list all flights \n
-Page 3: Get all airports from a country that is clicked on \n
-Page 4: Get airlines that only fly from countries with GDP in range [X,Y] \n
-Page 5: Get flights from Philadelphia to a country with specific parameters\n
+Page 1: Get flights to Country with less than X amount of Covid cases \
+Page 2: Get flights that are available from source country to destination country, list all flights \
+Page 3: Get all airports from a country that is clicked on \
+Page 4: Get airlines that only fly from countries with GDP in range [X,Y] \
+Page 5: Get flights from Philadelphia to a country with specific parameters\
 
 
 Motivation for the idea/description of the problem the application solves
