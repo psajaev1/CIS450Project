@@ -13,12 +13,17 @@ var connection = mysql.createPool(config);
 function getAllGenres(req, res) {
   
   var query = `
-    SELECT DISTINCT genre
-    FROM Genres;
+    SELECT *
+    FROM COUNTRIES;
   `;
   connection.query(query, function(err, rows, fields) {
-    if (err) console.log(err);
+    if (err) {
+      console.log(err)
+      console.log("hitting error");
+    }
     else {
+      console.log("hitting not error");
+      //console.log(rows);
       res.json(rows);
     }
   });
@@ -53,6 +58,7 @@ function getTopInGenre(req, res) {
 function getRecs(req, res) {
   
   var movieTitle = req.params.title;
+  console.log(movieTitle);
 
   var query = `
     WITH genre_table AS
@@ -72,10 +78,17 @@ function getRecs(req, res) {
     ORDER BY rating DESC, vote_count DESC
     LIMIT 5;
   `;
-  connection.query(query, function(err, rows, fields) {
+
+  var query2 = `
+  SELECT DISTINCT name, City 
+  FROM airports
+  WHERE city = '${movieTitle}'; 
+  `;
+
+  connection.query(query2, function(err, rows, fields) {
     if (err) console.log(err);
     else {
-      console.log("done loading lol");
+      console.log(rows);
       res.json(rows);
     }
   });
