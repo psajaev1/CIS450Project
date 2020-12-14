@@ -7,6 +7,11 @@ import {
 import Dashboard from './Dashboard';
 import Recommendations from './Recommendations';
 import BestGenres from './BestGenres';
+import COVID from './COVID';
+import Airports from './Airports';
+import Flights from './Flights';
+import Airlines from './Airlines';
+import PennStudents from './PennStudents';
 
 export default class App extends React.Component {
 
@@ -19,26 +24,38 @@ export default class App extends React.Component {
 							exact
 							path="/"
 							render={() => (
-								<Dashboard />
+								<Airports />
 							)}
 						/>
 						<Route
 							exact
-							path="/dashboard"
+							path="/Airports"
 							render={() => (
-								<Dashboard />
+								<Airports />
 							)}
 						/>
 						<Route
-							path="/recommendations"
+							path="/Airlines"
 							render={() => (
-								<Recommendations />
+								<Airlines />
 							)}
 						/>
 						<Route
-							path="/bestgenres"
+							path="/Flights"
 							render={() => (
-								<BestGenres />
+								<Flights />
+							)}
+						/>
+						<Route
+							path="/COVID"
+							render={() => (
+								<COVID />
+							)}
+						/>
+						<Route
+							path="/PennStudents"
+							render={() => (
+								<PennStudents />
 							)}
 						/>
 					</Switch>
