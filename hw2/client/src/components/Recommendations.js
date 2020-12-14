@@ -28,31 +28,30 @@ export default class Recommendations extends React.Component {
 	/* ---- Q2 (Recommendations) ---- */
 	// Hint: Name of movie submitted is contained in `this.state.movieName`.
 	submitMovie() {
-
+		
 	var movieTitle = this.state.movieName;
 
-    // Send an HTTP request to the server.
-    fetch("http://localhost:8081/recommendations/" + movieTitle, {
+	fetch("http://localhost:8081/recommendations/" + movieTitle, {
       method: 'GET' // The type of HTTP request.
     })
       .then(res => res.json()) // Convert the response data to a JSON.
-      .then(recList => {
-        if (!recList) return;
+      .then(movieList => {
+        if (!movieList) return;
+        // Map each genreObj in genreList to an HTML element:
+        // A button which triggers the showMovies function for each genre.
 
+        let movieDivs = movieList.map((movieObj, i) =>
+           <RecommendationsRow airport={movieObj.name} city={movieObj.City}/>
+        ); 
 
-        let recDivs = recList.map((recObj, i) =>
-          <RecommendationsRow title={recObj.title} id={recObj.id} rating={recObj.rating} votes={recObj.vote_count}  />
-        );
 
         // Set the state of the genres list to the value returned by the HTTP response from the server.
         this.setState({
-          recMovies: recDivs
+          recMovies: movieDivs
         })
       })
       .catch(err => console.log(err)) // Print the error if there is one.
-
-		
-	}
+  }
 
 	
 	render() {
@@ -66,16 +65,14 @@ export default class Recommendations extends React.Component {
 			    		<div className="h5">Recommendations</div>
 			    		<br></br>
 			    		<div className="input-container">
-			    			<input type='text' placeholder="Enter Movie Name" value={this.state.movieName} onChange={this.handleMovieNameChange} id="movieName" className="movie-input"/>
+			    			<input type='text' placeholder="Enter City" value={this.state.movieName} onChange={this.handleMovieNameChange} id="movieName" className="movie-input"/>
 			    			<button id="submitMovieBtn" className="submit-btn" onClick={this.submitMovie}>Submit</button>
 			    		</div>
 			    		<div className="header-container">
-			    			<div className="h6">You may like ...</div>
+			    			<div className="h6">Here are possible airports</div>
 			    			<div className="headers">
-			    				<div className="header"><strong>Title</strong></div>
-			    				<div className="header"><strong>Movie ID</strong></div>
-					            <div className="header"><strong>Rating</strong></div>
-					            <div className="header"><strong>Vote Count</strong></div>
+			    				<div className="header"><strong>Airport</strong></div>
+			    				{/* <div className="header"><strong>City</strong></div> */}
 			    			</div>
 			    		</div>
 			    		<div className="results-container" id="results">
