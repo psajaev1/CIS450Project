@@ -67,10 +67,62 @@ function flights(req, res) {
   });
 };
 
+function getGDPCountries(req, res) {
+  
+  console.log("does it get to GDP query")
+  var lowerGDP = req.params.lowerGDP;
+  var upperGDP = req.params.upperGDP;
+  console.log(lowerGDP);
+  console.log(upperGDP);
+
+
+  var query = `
+    
+    SELECT DISTINCT name as tempname, AirlineID as badID
+    From airlines
+    Join countries
+    ON airlines.country = countries.country
+    WHERE countries.GDPpercapita >= ${lowerGDP} 
+    OR countries.GDPpercapita  <= ${upperGDP};
+  `;
+
+
+
+  var testquery = `
+  WITH temptable as 
+  (SELECT DISTINCT name as tempname, AirlineID as badID
+  From airlines
+  Join countries
+  ON airlines.country = countries.country
+  WHERE countries.GDPpercapita < 1 
+  OR countries.GDPpercapita  > 10)
+  SELECT DISTINCT name, AirlineID 
+  FROM airlines
+  WHERE AirlineID NOT IN (SELECT badID FROM temptable);
+  
+  `;
+
+  // SELECT DISTINCT name 
+  // FROM airlines
+  // WHERE name NOT IN (SELECT name FROM temp_table);
+
+  connection.query(query, function(err, rows, fields) {
+    if (err) console.log(err);
+    else {
+      console.log(rows);
+      console.log("goin to json now");
+      res.json(rows);
+    }
+  });
+
+};
+
+
 
 // The exported functions, which can be accessed in index.js.
 module.exports = {
   getAllCountries: getAllCountries,
   getCountryInfo: getCountryInfo,
+ 	getGDPCountries: getGDPCountries,
   flights: flights
 }

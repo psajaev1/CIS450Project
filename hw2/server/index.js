@@ -20,7 +20,9 @@ app.get('/countries', routes.getAllCountries);
 app.get('/countries/:selectedCountry', routes.getCountryInfo);
 
 app.get('/flights/:selectedCode', routes.flights);
-
+  
+/* ---- Q2 (Recommendations) ---- */
+app.get('/Airlines/:lowerGDP&:upperGDP', routes.getGDPCountries);
 
 
 app.listen(8081, () => {
