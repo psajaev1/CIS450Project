@@ -55,40 +55,50 @@ function getTopInGenre(req, res) {
 };
 
 /* ---- Q2 (Recommendations) ---- */
-function getRecs(req, res) {
+function getGDPCountries(req, res) {
   
-  var movieTitle = req.params.title;
-  console.log(movieTitle);
+  console.log("does it get to GDP query")
+  var lowerGDP = req.params.lowerGDP;
+  var upperGDP = req.params.upperGDP;
+  console.log(lowerGDP);
+  console.log(upperGDP);
+
 
   var query = `
-    WITH genre_table AS
-    (SELECT genre as m_genre, Movies.id as id 
-    FROM Genres
-    JOIN Movies
-    ON Genres.movie_id = Movies.id
-    WHERE Movies.title = '${movieTitle}')
-    SELECT title, id, rating, vote_count
-    FROM Movies
-    JOIN Genres 
-    ON Movies.id = Genres.movie_id
-    WHERE Genres.genre IN (SELECT m_genre FROM genre_table)
-    GROUP BY Movies.id
-    HAVING COUNT(DISTINCT Genres.genre) = (SELECT COUNT(m_genre) FROM genre_table)
-    AND Movies.title <> '${movieTitle}'
-    ORDER BY rating DESC, vote_count DESC
-    LIMIT 5;
+    
+    SELECT DISTINCT name as tempname, AirlineID as badID
+    From airlines
+    Join countries
+    ON airlines.country = countries.country
+    WHERE countries.GDPpercapita >= ${lowerGDP} 
+    OR countries.GDPpercapita  <= ${upperGDP};
   `;
 
-  var query2 = `
-  SELECT DISTINCT name, City 
-  FROM airports
-  WHERE city = '${movieTitle}'; 
+
+
+  var testquery = `
+  WITH temptable as 
+  (SELECT DISTINCT name as tempname, AirlineID as badID
+  From airlines
+  Join countries
+  ON airlines.country = countries.country
+  WHERE countries.GDPpercapita < 1 
+  OR countries.GDPpercapita  > 10)
+  SELECT DISTINCT name, AirlineID 
+  FROM airlines
+  WHERE AirlineID NOT IN (SELECT badID FROM temptable);
+  
   `;
 
-  connection.query(query2, function(err, rows, fields) {
+  // SELECT DISTINCT name 
+  // FROM airlines
+  // WHERE name NOT IN (SELECT name FROM temp_table);
+
+  connection.query(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
       console.log(rows);
+      console.log("goin to json now");
       res.json(rows);
     }
   });
@@ -158,7 +168,7 @@ function bestGenresPerDecade(req, res) {
 module.exports = {
 	getAllGenres: getAllGenres,
 	getTopInGenre: getTopInGenre,
-	getRecs: getRecs,
+	getGDPCountries: getGDPCountries,
 	getDecades: getDecades,
   bestGenresPerDecade: bestGenresPerDecade
 }

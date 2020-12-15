@@ -34,7 +34,7 @@ app.get('/genres/:genre', routes.getTopInGenre); // Hint: Replace () => {} with 
 
 
 /* ---- Q2 (Recommendations) ---- */
-app.get('/recommendations/:title', routes.getRecs)
+app.get('/Airlines/:lowerGDP&:upperGDP', routes.getGDPCountries);
 
 
 
