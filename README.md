@@ -5,7 +5,7 @@ Bram Bruno, Paul Wei Zou, Phillip Sajaev, Paula Scanlan
 COVID PAGE: Get flights to Country with less than X amount of Covid cases \
 FLIGHTS PAGE: Get flights that are available from source country to destination country, list all flights \
 AIRPORTS PAGE: Get all airports from a country that is clicked on \
-AIRLINES PAGE: Get airlines that only fly from countries with GDP in range [X,Y] \
+AIRLINES PAGE: Get airlines that fly from countries with GDP in range [X,Y] \
 PENN_STUDENTS PAGE: Get flights from Philadelphia to a country with specific parameters\
 
 
