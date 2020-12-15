@@ -11,6 +11,10 @@
   height: 40px;
 }
 
+.header1, .airline, .country, .city, .airport, .code {
+  flex: 1 0 20%;
+}
+
 .movieResults .title, .movieResults .id, .movieResults .rating, .movieResults .votes, .headers .header {
   flex: 1 0 25%;
 }
