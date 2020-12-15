@@ -9,52 +9,64 @@ var connection = mysql.createPool(config);
 /* -------------------------------------------------- */
 
 
-/* ---- Q1a (Dashboard) ---- */
-function getAllGenres(req, res) {
-  
+//Get all available countries
+function getAllCountries(req, res) {
   var query = `
-    SELECT *
-    FROM COUNTRIES;
+    SELECT DISTINCT country
+    FROM countries
+    WHERE country != 'Country'
   `;
-  connection.query(query, function(err, rows, fields) {
-    if (err) {
-      console.log(err)
-      console.log("hitting error");
-    }
-    else {
-      console.log("hitting not error");
-      //console.log(rows);
-      res.json(rows);
-    }
-  });
 
-};
-
-
-/* ---- Q1b (Dashboard) ---- */
-function getTopInGenre(req, res) {
-  
-  var genreName = req.params.genre;
-
-  var query = `
-    SELECT DISTINCT Movies.title, Movies.rating, Movies.vote_count
-    FROM Movies
-    JOIN Genres
-    ON Genres.genre = '${genreName}' AND Movies.id = Genres.movie_id
-    ORDER BY rating DESC, vote_count DESC
-    LIMIT 10;
-  `;
-  connection.query(query, function(err, rows, fields) {
+  connection.query(query, function (err, rows, fields) {
     if (err) console.log(err);
     else {
       res.json(rows);
     }
   });
-
-
 };
 
-/* ---- Q2 (Recommendations) ---- */
+//Get all airports in a country
+function getCountryInfo(req, res) {
+  var selectedCountry = req.params.selectedCountry;
+
+  var query = `
+  	SELECT country, name, city, iata
+  	FROM airports 
+  	WHERE country = '${selectedCountry}'
+  	ORDER BY city
+  `;
+
+  connection.query(query, function (err, rows, fields) {
+    if (err) console.log(err);
+    else {
+      res.json(rows);
+    }
+  });
+};
+
+function flights(req, res) {
+  var selectedCode = req.params.selectedCode;
+
+  //airline, country, city, name, iata
+
+  var query = `
+      SELECT X.name AS airline, Y.country, Y.city, Y.name, Y.iata 
+      FROM routes R, airports A, airlines X, airports Y
+      WHERE A.iata = '${selectedCode}'
+      AND A.id = R.source_airport_id
+      AND R.airlineID = X.id
+      AND R.dest_airport_id = Y.id
+      ORDER BY city
+  `;
+
+  connection.query(query, function (err, rows, fields) {
+    if (err) console.log(err);
+    else {
+      res.json(rows);
+    }
+  });
+};
+
 function getGDPCountries(req, res) {
   
   console.log("does it get to GDP query")
@@ -105,70 +117,12 @@ function getGDPCountries(req, res) {
 
 };
 
-/* ---- (Best Genres) ---- */
-function getDecades(req, res) {
-	var query = `
-    SELECT DISTINCT (FLOOR(year/10)*10) AS decade
-    FROM (
-      SELECT DISTINCT release_year as year
-      FROM Movies
-      ORDER BY release_year
-    ) y
-  `;
-  connection.query(query, function(err, rows, fields) {
-    if (err) console.log(err);
-    else {
-      res.json(rows);
-    }
-  });
-}
 
-/* ---- Q3 (Best Genres) ---- */
-function bestGenresPerDecade(req, res) {
-
-  var selDecadeStartstr = req.params.decade;
-  var selDecadeStart = parseInt(selDecadeStartstr, 10);
-  var selDecadeEnd = selDecadeStart + 9;
-
-  var query = `
-  WITH temp_table as 
-  (SELECT Movies.id as id, Genres.genre as genre, Movies.rating as rating, Movies.release_year as release_year
-  FROM Movies 
-  JOIN Genres 
-  ON Movies.id = Genres.movie_id),
-  dec_table as 
-  (SELECT * 
-  FROM temp_table 
-  WHERE temp_table.release_year >= '${selDecadeStart}' AND temp_table.release_year <= '${selDecadeEnd}'), 
-  genre_table as 
-  (SELECT DISTINCT genre FROM Genres),
-  temp_table2 as 
-  (SELECT genre_table.genre, AVG(dec_table.rating) as avg_rating
-  FROM dec_table
-  RIGHT JOIN genre_table 
-  ON dec_table.genre = genre_table.genre
-  GROUP BY genre_table.genre
-  ORDER BY AVG(dec_table.rating) DESC, genre_table.genre)
-  SELECT genre, IFNULL(avg_rating, 0) as avg_rating
-  FROM temp_table2;
-
-  `;
-  connection.query(query, function(err, rows, fields) {
-    if (err) console.log(err);
-    else {
-      res.json(rows);
-    }
-  });
-
-
-
-};
 
 // The exported functions, which can be accessed in index.js.
 module.exports = {
-	getAllGenres: getAllGenres,
-	getTopInGenre: getTopInGenre,
-	getGDPCountries: getGDPCountries,
-	getDecades: getDecades,
-  bestGenresPerDecade: bestGenresPerDecade
+  getAllCountries: getAllCountries,
+  getCountryInfo: getCountryInfo,
+ 	getGDPCountries: getGDPCountries,
+  flights: flights
 }

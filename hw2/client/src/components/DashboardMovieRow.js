@@ -6,14 +6,13 @@ export default class DashboardMovieRow extends React.Component {
 		super(props);
 	}
 
-	/* ---- Q1b (Dashboard) ---- */
-	/* Change the contents (NOT THE STRUCTURE) of the HTML elements to show a movie row. */
 	render() {
 		return (
 			<div className="movie">
-				<div className="title">{this.props.title}</div>
-				<div className="rating">{this.props.rating}</div>
-				<div className="votes">{this.props.votes}</div>
+				<div className="rating">{this.props.country}</div>
+				<div className="rating">{this.props.city}</div>
+				<div className="rating">{this.props.airport}</div>
+				<div className="rating">{this.props.code}</div>
 			</div>
 		);
 	}

@@ -60,22 +60,25 @@ export default class Airlines extends React.Component {
            <RecommendationsRow airport={movieObj.tempname} city={movieObj.badID}/>
         ); 
 
+				let movieDivs = movieList.map((movieObj, i) =>
+					<RecommendationsRow airport={movieObj.name} city={movieObj.City} />
+				);
 
-        // Set the state of the genres list to the value returned by the HTTP response from the server.
-        this.setState({
-          recMovies: movieDivs
-        })
-      })
-      .catch(err => console.log(err)) // Print the error if there is one.
-  }
 
-	
+				// Set the state of the genres list to the value returned by the HTTP response from the server.
+				this.setState({
+					recMovies: movieDivs
+				})
+			})
+			.catch(err => console.log(err)) // Print the error if there is one.
+	}
+
+
 	render() {
 
 		return (
 			<div className="Airlines">
 				<PageNavbar active="Airlines" />
-
 			    <div className="container recommendations-container">
 			    	<div className="jumbotron">
 			    		<div className="h5">Airlines</div>
