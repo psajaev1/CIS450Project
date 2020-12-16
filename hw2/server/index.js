@@ -28,6 +28,9 @@ app.get('/Airlines/:lowerGDP&:upperGDP', routes.getGDPCountries);
 // PENN STUDENTS 
 app.get('/PennStudents/:popDensity', routes.getPennStudents);
 
+
+app.get('/COVID/:selectedCountry', routes.getCOVIDCases);
+
 app.listen(8081, () => {
 	console.log(`Server listening on PORT 8081`);
 });
