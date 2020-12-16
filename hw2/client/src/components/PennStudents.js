@@ -37,10 +37,9 @@ export default class PennStudents extends React.Component {
 	// Hint: Name of movie submitted is contained in `this.state.movieName`.
 	pennStudents() {
 		
-	var cDeaths = this.state.covidDeaths;
 	var pDens = this.state.popDensity;
 
-	fetch("http://localhost:8081/PennStudents/" + cDeaths + "&" + pDens, {
+	fetch("http://localhost:8081/PennStudents/" + pDens, {
       method: 'GET' // The type of HTTP request.
     })
       .then(res => res.json()) // Convert the response data to a JSON.
@@ -74,7 +73,6 @@ export default class PennStudents extends React.Component {
 			    		<div className="h5">Nonstop Philadelphia Flight Destinations for Penn Students</div>
 			    		<br></br>
 			    		<div className="input-container">
-						<input type='number' placeholder="Upper limit Covid cases" onChange={this.handleCovidDeathChange}/>
 			    		</div>
 						<input type='number' placeholder="Lower limit GDP Density" onChange={this.handlePopDensityChange} />
 						<div className="submit-container">
