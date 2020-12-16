@@ -39,11 +39,6 @@ airlines_df = airlines_df.dropna(how='any',axis=0)
 airlines_df.to_csv('C:/Users/Phillip Sajaev/Downloads/450projectcsv/airlines_df.csv', index = False, header=True)
 
 
-airports_df = pd.read_csv("C:/Users/Phillip Sajaev/Downloads/archive/airports-extended.csv", names=['ID', 'Airport', 'City', 'Country', '3CharCode', 'AYGA', 'Lat', 'Long', 'col1', 'col2', 'col3', 'col4', 'col5', 'col6'])
-airports_df = airports_df.drop([ '3CharCode', 'AYGA', 'Lat', 'Long', 'col1', 'col2', 'col3', 'col4', 'col5', 'col6'], axis = 1)
-airports_df = airports_df.dropna(how='any',axis=0) 
 
-# put your path here
-airports_df.to_csv('C:/Users/Phillip Sajaev/Downloads/450projectcsv/airports_df.csv', index = False, header=True)
 
 
