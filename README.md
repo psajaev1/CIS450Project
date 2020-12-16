@@ -1,7 +1,11 @@
 # CIS450Project
 
+
 Bram Bruno, Paul Wei Zou, Phillip Sajaev, Paula Scanlan
-				
+
+# Set-Up Instructions
+
+
 COVID PAGE: Get flights to Country with less than X amount of Covid cases \
 FLIGHTS PAGE: Get flights that are available from source country to destination country, list all flights \
 AIRPORTS PAGE: Get all airports from a country that is clicked on \
