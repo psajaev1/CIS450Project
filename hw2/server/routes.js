@@ -118,10 +118,45 @@ function getGDPCountries(req, res) {
 
 
 
-// The exported functions, which can be accessed in index.js.
-module.exports = {
-  getAllCountries: getAllCountries,
-  getCountryInfo: getCountryInfo,
- 	getGDPCountries: getGDPCountries,
-  flights: flights
+/* ---- (Penn Students) ---- */ 
+function getPennStudents(req, res) {  
+
+  console.log("does it get to pennStudents query")  
+  var popDensity = req.params.popDensity; 
+
+
+  var query = ` 
+  WITH temptable1 as  
+  (SELECT DISTINCT sourceairportid, destinationairportid  
+  FROM routes 
+  JOIN airports 
+  ON routes.sourceairportid = airports.id 
+  WHERE airports.city = 'Philadelphia'),  
+  temptable2 as   
+  (SELECT DISTINCT airports.city as City, airports.country as Country, ID 
+  FROM airports 
+  JOIN countries  
+  ON REPLACE(airports.country, ' ', '') = REPLACE(countries.Country, ' ', '') 
+  WHERE countries.PopDensity > '${popDensity}') 
+  SELECT * FROM temptable2  
+  WHERE temptable2.ID IN (SELECT destinationairportid FROM temptable1); 
+  `;  
+  connection.query(query, function(err, rows, fields) { 
+    if (err) console.log(err);  
+    else {  
+      console.log(rows);  
+      console.log("querying rows now"); 
+      res.json(rows); 
+    } 
+  }); 
+} 
+
+// The exported functions, which can be accessed in index.js. 
+module.exports = {  
+
+  getAllCountries: getAllCountries, 
+  getCountryInfo: getCountryInfo, 
+  getGDPCountries: getGDPCountries, 
+  getPennStudents: getPennStudents, 
+  flights: flights  
 }
