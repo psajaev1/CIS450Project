@@ -32,7 +32,7 @@ function getCountryInfo(req, res) {
   var query = `
   	SELECT country, name, city, iata
   	FROM airports 
-  	WHERE country = '${selectedCountry}'
+  	WHERE replace(country, ' ', '') = replace('${selectedCountry}', ' ', '')
   	ORDER BY city
   `;
 
@@ -53,9 +53,9 @@ function flights(req, res) {
       SELECT X.name AS airline, Y.country, Y.city, Y.name, Y.iata 
       FROM routes R, airports A, airlines X, airports Y
       WHERE A.iata = '${selectedCode}'
-      AND A.id = R.source_airport_id
-      AND R.airlineID = X.id
-      AND R.dest_airport_id = Y.id
+      AND A.id = R.sourceairportid
+      AND R.airlineID = X.Airlineid
+      AND R.destinationairportid = Y.ID
       ORDER BY city
   `;
 
@@ -149,6 +149,34 @@ function getPennStudents(req, res) {
       res.json(rows); 
     } 
   }); 
+}
+
+
+function getCOVIDCases(req, res) {
+	console.log('covid');
+	var airportCode = req.params.selectedCountry;
+
+
+	var query = `
+
+		WITH SelectedCountry AS (
+		SELECT Country
+		FROM airports
+		Where airports.iata = '${airportCode}')
+
+		SELECT DISTINCT COVID.Country AS Country, Date AS Date, SUM(Confirmed) AS Confirmed, SUM(Deaths) AS Deaths
+		FROM COVID
+		JOIN SelectedCountry ON replace(COVID.Country, ' ', '') = replace(SelectedCountry.Country, ' ', '')
+		GROUP BY LEFT(Date, 1);
+	`;
+	connection.query(query, function(err, rows, fields) { 
+    if (err) console.log(err);  
+    else {  
+      console.log(rows);  
+      console.log("querying rows now"); 
+      res.json(rows); 
+    } 
+  }); 
 } 
 
 // The exported functions, which can be accessed in index.js. 
@@ -158,5 +186,6 @@ module.exports = {
   getCountryInfo: getCountryInfo, 
   getGDPCountries: getGDPCountries, 
   getPennStudents: getPennStudents, 
-  flights: flights  
+  flights: flights,  
+  getCOVIDCases: getCOVIDCases
 }
