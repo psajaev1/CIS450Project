@@ -37,7 +37,7 @@ Page 4: This page will tell you information about your selected city including h
 Once the user picks their city, we will output covid data for that city. That way the users can make an informed decision whether or not to travel.	
 
 
-BUILD INSTRUCTIONS
+# BUILD INSTRUCTIONS
 Create tables with the following commands and then load data with the commands that proceed.
 
 CREATE TABLE countries(
