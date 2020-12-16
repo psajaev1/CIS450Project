@@ -28,7 +28,6 @@ export default class Airports extends React.Component {
         dataKey: 'country',
         width: 600,
         resizable: true,
-        sortable: true,
         frozen: Column.Alignment.CENTER,
       },
       {
@@ -37,7 +36,6 @@ export default class Airports extends React.Component {
         dataKey: 'city',
         width: 600,
         resizable: true,
-        sortable: true,
         frozen: Column.Alignment.CENTER,
       },
       {
@@ -46,7 +44,6 @@ export default class Airports extends React.Component {
         dataKey: 'name',
         width: 600,
         resizable: true,
-        sortable: true,
         frozen: Column.Alignment.CENTER,
       },
       {
@@ -55,7 +52,6 @@ export default class Airports extends React.Component {
         dataKey: 'iata',
         width: 600,
         resizable: true,
-        sortable: true,
         frozen: Column.Alignment.CENTER,
       }
     ]
@@ -109,12 +105,14 @@ export default class Airports extends React.Component {
     return (
       <div className="Dashboard">
 
-        <PageNavbar active="dashboard" />
+        <PageNavbar active="Airports" />
 
         <br></br>
         <div className="container movies-container">
           <div className="jumbotron">
             <div className="h5">Countries</div>
+            <div>Select a country to view all available airports!</div>
+            <br></br>
             <div className="genres-container">
               {this.state.countries}
             </div>

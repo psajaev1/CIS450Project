@@ -21,7 +21,6 @@ export default class PennStudents extends React.Component {
 			  dataKey: 'City',
 			  width: 600,
 			  resizable: true,
-			  sortable: true,
 			  frozen: Column.Alignment.CENTER,
 			},
 			{
@@ -30,7 +29,6 @@ export default class PennStudents extends React.Component {
 			  dataKey: 'Country',
 			  width: 600,
 			  align: Column.Alignment.CENTER,
-			  sortable: false,
 			}
 		  ]
 
@@ -98,9 +96,11 @@ export default class PennStudents extends React.Component {
 			    	<div className="jumbotron">
 			    		<div className="h5">Nonstop Philadelphia Flight Destinations for Penn Students</div>
 			    		<br></br>
+			    		<div> Use this page to find flights from Philadelphia to a country with a greater population density than your input</div>
+			    		<br></br>
 			    		<div className="input-container">
 			    		</div>
-						<input type='number' placeholder="Lower limit GDP Density" onChange={this.handlePopDensityChange} />
+						<input type='number' placeholder="Minimum Population Density" onChange={this.handlePopDensityChange} />
 						<div className="submit-container">
 						<button id="submitMovieBtn" className="submit-btn" onClick={this.pennStudents}>Submit</button>
 
