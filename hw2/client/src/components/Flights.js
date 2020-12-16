@@ -3,6 +3,9 @@ import PageNavbar from './PageNavbar';
 import RecommendationsRow from './RecommendationsRow';
 import '../style/Recommendations.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import ReactTable from 'react-table';
+import BaseTable, { Column } from 'react-base-table'
+import 'react-base-table/styles.css'
 
 export default class Recommendations extends React.Component {
 	constructor(props) {
@@ -17,6 +20,54 @@ export default class Recommendations extends React.Component {
 
 		this.handleChange = this.handleChange.bind(this);
 		this.searchFlights = this.searchFlights.bind(this);
+
+		this.columns = [
+			{
+				key: 'city',
+				title: 'City',
+				dataKey: 'city',
+				width: 600,
+				resizable: true,
+				sortable: true,
+				frozen: Column.Alignment.CENTER,
+			},
+			{
+				key: 'country',
+				title: 'Country',
+				dataKey: 'country',
+				width: 600,
+				resizable: true,
+				sortable: true,
+				frozen: Column.Alignment.CENTER,
+			},
+			{
+				key: 'airline',
+				title: 'Airline',
+				dataKey: 'airline',
+				width: 600,
+				resizable: true,
+				sortable: true,
+				frozen: Column.Alignment.CENTER,
+			},
+			{
+				key: 'airport',
+				title: 'Airport',
+				dataKey: 'name',
+				width: 600,
+				resizable: true,
+				sortable: true,
+				frozen: Column.Alignment.CENTER,
+			},
+			{
+				key: 'code',
+				title: 'Code',
+				dataKey: 'iata',
+				width: 600,
+				resizable: true,
+				sortable: true,
+				frozen: Column.Alignment.CENTER,
+			}
+		]
 	}
 
 	handleChange(e) {
@@ -33,14 +84,8 @@ export default class Recommendations extends React.Component {
 		})
 			.then(res => res.json()) // Convert the response data to a JSON.
 			.then(recList => {
-				if (!recList) return;
-
-				let recDiv = recList.map((recObj, i) =>
-					<RecommendationsRow airline={recObj.airline} country={recObj.country} city={recObj.city} airport={recObj.name} code={recObj.iata} />
-				);
-
 				this.setState({
-					recFlights: recDiv
+					recFlights: recList
 				})
 			})
 			.catch(err => console.log(err))	// Print the error if there is one.
@@ -64,20 +109,8 @@ export default class Recommendations extends React.Component {
 						</div>
 					</div>
 					<div className="jumbotron">
-						<div className="header-container">
-
-							<div className="h5">Destinations</div>
-							<div className="headers">
-								<div className="header1"><strong>Arrival City</strong></div>
-								<div className="header1"><strong>Arrival Country</strong></div>
-								<div className="header1"><strong>Airline</strong></div>
-								<div className="header1"><strong>Arrival Airport</strong></div>
-								<div className="header1"><strong>Arrival Airport Code</strong></div>
-							</div>
-						</div>
-						<div className="results-container" id="results">
-							{this.state.recFlights}
-						</div>
+						<div className="h5">Destinations</div>
+						<BaseTable columns={this.columns} data={this.state.recFlights} width={1000} height={400}></BaseTable>
 					</div>
 				</div >
 			</div >

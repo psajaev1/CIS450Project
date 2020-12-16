@@ -4,6 +4,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import PageNavbar from './PageNavbar';
 import GenreButton from './GenreButton';
 import DashboardMovieRow from './DashboardMovieRow';
+import ReactTable from 'react-table';
+import BaseTable, { Column } from 'react-base-table'
+import 'react-base-table/styles.css'
 
 export default class Airports extends React.Component {
   constructor(props) {
@@ -17,6 +20,45 @@ export default class Airports extends React.Component {
     }
 
     this.showMovies = this.showMovies.bind(this);
+
+    this.columns = [
+      {
+        key: 'country',
+        title: 'Country',
+        dataKey: 'country',
+        width: 600,
+        resizable: true,
+        sortable: true,
+        frozen: Column.Alignment.CENTER,
+      },
+      {
+        key: 'city',
+        title: 'City',
+        dataKey: 'city',
+        width: 600,
+        resizable: true,
+        sortable: true,
+        frozen: Column.Alignment.CENTER,
+      },
+      {
+        key: 'airport',
+        title: 'Airport',
+        dataKey: 'name',
+        width: 600,
+        resizable: true,
+        sortable: true,
+        frozen: Column.Alignment.CENTER,
+      },
+      {
+        key: 'code',
+        title: 'Code',
+        dataKey: 'iata',
+        width: 600,
+        resizable: true,
+        sortable: true,
+        frozen: Column.Alignment.CENTER,
+      }
+    ]
   }
 
   // React function that is called when the page load.
@@ -52,14 +94,8 @@ export default class Airports extends React.Component {
     })
       .then(res => res.json()) // Convert the response data to a JSON.
       .then(topTenList => {
-        if (!topTenList) return;
-
-        let topTenDiv = topTenList.map((movieObj, i) =>
-          <DashboardMovieRow country={movieObj.country} city={movieObj.city} airport={movieObj.name} code={movieObj.iata} />
-        );
-
         this.setState({
-          airports: topTenDiv
+          airports: topTenList
         })
       })
       .catch(err => console.log(err)) // Print the error if there is one.
@@ -67,7 +103,7 @@ export default class Airports extends React.Component {
   }
 
 
-  
+
 
   render() {
     return (
@@ -86,18 +122,8 @@ export default class Airports extends React.Component {
 
           <br></br>
           <div className="jumbotron">
-            <div className="movies-container">
             <div className="h5">Airports</div>
-              <div className="movies-header">
-                <div className="header"><strong>Country</strong></div>
-                <div className="header"><strong>City</strong></div>
-                <div className="header"><strong>Airport</strong></div>
-                <div className="header"><strong>Code</strong></div>
-              </div>
-              <div className="results-container" id="results">
-                {this.state.airports}
-              </div>
-            </div>
+            <BaseTable columns={this.columns} data={this.state.airports} width={1000} height={400}></BaseTable>
           </div>
         </div>
       </div>
