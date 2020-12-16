@@ -17,7 +17,7 @@ export default class Airlines extends React.Component {
 		this.state = {
 			lowerGDP: 0,
 			upperGDP: 0,
-			recMovies: []
+			recMovies: [],
 		}
 
 		this.handlelowerGDPChange = this.handlelowerGDPChange.bind(this);
@@ -31,7 +31,6 @@ export default class Airlines extends React.Component {
 			dataKey: 'id',
 			width:600,
 			resizable: true,
-			sortable: true,
 			frozen: Column.Alignment.CENTER,
 		},
 		{
@@ -40,7 +39,6 @@ export default class Airlines extends React.Component {
 			dataKey: 'name',
 			width:600,
 			resizable: true,
-			sortable: true,
 			frozen: Column.Alignment.CENTER,
 		},
 		{
@@ -49,7 +47,6 @@ export default class Airlines extends React.Component {
 			dataKey: 'SCountry',
 			width:600,
 			resizable: true,
-			sortable: true,
 			frozen: Column.Alignment.CENTER,
 		},
 		{
@@ -58,7 +55,6 @@ export default class Airlines extends React.Component {
 			dataKey: 'DCountry',
 			width:600,
 			resizable: true,
-			sortable: true,
 			frozen: Column.Alignment.CENTER,
 		}
 		]
@@ -124,6 +120,8 @@ render() {
 			    <div className="container recommendations-container">
 			    	<div className="jumbotron">
 			    		<div className="h5">Airlines</div>
+			    		<br></br>
+			    		<div>Find airlines which fly between two countries between a GDP per capita range</div>
 			    		<br></br>
 			    		<div className="input-container">
 			    			<input type='number' placeholder="Enter Lower Limit GDP" onChange={this.handlelowerGDPChange} id="lowerGDP" />

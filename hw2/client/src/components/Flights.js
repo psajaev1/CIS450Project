@@ -28,7 +28,6 @@ export default class Recommendations extends React.Component {
 				dataKey: 'city',
 				width: 600,
 				resizable: true,
-				sortable: true,
 				frozen: Column.Alignment.CENTER,
 			},
 			{
@@ -37,7 +36,6 @@ export default class Recommendations extends React.Component {
 				dataKey: 'country',
 				width: 600,
 				resizable: true,
-				sortable: true,
 				frozen: Column.Alignment.CENTER,
 			},
 			{
@@ -46,7 +44,6 @@ export default class Recommendations extends React.Component {
 				dataKey: 'airline',
 				width: 600,
 				resizable: true,
-				sortable: true,
 				frozen: Column.Alignment.CENTER,
 			},
 			{
@@ -55,7 +52,6 @@ export default class Recommendations extends React.Component {
 				dataKey: 'name',
 				width: 600,
 				resizable: true,
-				sortable: true,
 				frozen: Column.Alignment.CENTER,
 			},
 			{
@@ -64,7 +60,6 @@ export default class Recommendations extends React.Component {
 				dataKey: 'iata',
 				width: 600,
 				resizable: true,
-				sortable: true,
 				frozen: Column.Alignment.CENTER,
 			}
 		]
@@ -96,11 +91,13 @@ export default class Recommendations extends React.Component {
 
 		return (
 			<div className="Recommendations">
-				<PageNavbar active="recommendations" />
+				<PageNavbar active="Flights" />
 
 				<div className="container recommendations-container">
 					<div className="jumbotron">
 						<div className="h5">Search for Flights</div>
+						<br></br>
+						<div>Search desinations from any given airport</div>
 						<br></br>
 						<div className="input-container">
 							<div className="h6">Departure Airport</div>

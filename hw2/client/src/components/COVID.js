@@ -27,7 +27,6 @@ export default class COVID extends React.Component {
 				dataKey: 'Country',
 				width: 600,
 				resizable: true,
-				sortable: true,
 				frozen: Column.Alignment.CENTER,
 			},
 			{
@@ -36,7 +35,6 @@ export default class COVID extends React.Component {
 				dataKey: 'Date',
 				width: 600,
 				resizable: true,
-				sortable: true,
 				frozen: Column.Alignment.CENTER,
 			},
 			{
@@ -45,7 +43,6 @@ export default class COVID extends React.Component {
 				dataKey: 'Confirmed',
 				width: 600,
 				resizable: true,
-				sortable: true,
 				frozen: Column.Alignment.CENTER,
 			},
 			{
@@ -54,7 +51,6 @@ export default class COVID extends React.Component {
 				dataKey: 'Deaths',
 				width: 600,
 				resizable: true,
-				sortable: true,
 				frozen: Column.Alignment.CENTER,
 			}
 		]
