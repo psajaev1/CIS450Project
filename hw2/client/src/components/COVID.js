@@ -22,7 +22,16 @@ export default class COVID extends React.Component {
 
 		this.columns = [
 			{
-				key: 'date',
+				key: 'Country',
+				title: 'Country',
+				dataKey: 'Country',
+				width: 600,
+				resizable: true,
+				sortable: true,
+				frozen: Column.Alignment.CENTER,
+			},
+			{
+				key: 'Date',
 				title: 'Date',
 				dataKey: 'Date',
 				width: 600,
@@ -31,18 +40,18 @@ export default class COVID extends React.Component {
 				frozen: Column.Alignment.CENTER,
 			},
 			{
-				key: 'confirmed',
+				key: 'Confirmed',
 				title: 'Total Cases Confirmed',
-				dataKey: 'confirmed',
+				dataKey: 'Confirmed',
 				width: 600,
 				resizable: true,
 				sortable: true,
 				frozen: Column.Alignment.CENTER,
 			},
 			{
-				key: 'deaths',
+				key: 'Deaths',
 				title: 'Total Deaths',
-				dataKey: 'deaths',
+				dataKey: 'Deaths',
 				width: 600,
 				resizable: true,
 				sortable: true,
@@ -57,26 +66,26 @@ export default class COVID extends React.Component {
 		});
 	}
 
-	/* ---- Q3a (Best Genres) ---- */
-	componentDidMount() {
+	// /* ---- Q3a (Best Genres) ---- */
+	// componentDidMount() {
 
-		fetch("http://localhost:8081/covid", {
-			method: 'GET' // The type of HTTP request.
-		})
-			.then(res => res.json()) // Convert the response data to a JSON.
-			.then(decList => {
-				if (!decList) return;
-				// Map each genreObj in genreList to an HTML element:
-				// A button which triggers the showMovies function for each genre.
-				let decDivs = decList.map((decObj, i) =>
-					<option label={decObj.countries} value={decObj.countries} onClick={() => this.handleChange(decObj)} />
-				);
+	// 	fetch("http://localhost:8081/COVID" + this.state.selectedCountry, {
+	// 		method: 'GET' // The type of HTTP request.
+	// 	})
+	// 		.then(res => res.json()) // Convert the response data to a JSON.
+	// 		.then(decList => {
+	// 			if (!decList) return;
+	// 			// Map each genreObj in genreList to an HTML element:
+	// 			// A button which triggers the showMovies function for each genre.
+	// 			let decDivs = decList.map((decObj, i) =>
+	// 				<option label={decObj.countries} value={decObj.countries} onClick={() => this.handleChange(decObj)} />
+	// 			);
 
-				this.setState({
-					countries: decDivs
-				})
-			}).catch(err => console.log(err))
-	}
+	// 			this.setState({
+	// 				cases: decDivs
+	// 			})
+	// 		}).catch(err => console.log(err))
+	// }
 
 
 
@@ -88,7 +97,7 @@ export default class COVID extends React.Component {
 		var country = this.state.selectedCountry;
 
 		// Send an HTTP request to the server.
-		fetch("http://localhost:8081/covid/" + country, {
+		fetch("http://localhost:8081/COVID/" + this.state.selectedCountry, {
 			method: 'GET' // The type of HTTP request.
 		})
 			.then(res => res.json()) // Convert the response data to a JSON.
@@ -107,16 +116,16 @@ export default class COVID extends React.Component {
 			<div className="COVID">
 				<PageNavbar active="COVID" />
 
-				<div className="container bestgenres-container">
+				<div className="container recommendations-container">
 					<div className="jumbotron">
-						<div className="h5">Track Covid Growth by Country</div>
-						<div className="dropdown-container">
-							<select value={this.state.selectedCountry} onChange={this.handleChange} className="dropdown" id="decadesDropdown">
-								<option select value> -- select a country -- </option>
-								{this.state.countries}
-							</select>
-							<button className="submit-btn" id="decadesSubmitBtn" onClick={this.submitCountry}>Search</button>
+						<div className="h5">Check COVID Cases at Destination</div>
+						<br></br>
+						<div className="input-container">
+							<div className="h6">Destination Airport</div>
+							<input type='text' placeholder="Enter 3-Letter Airport Code" value={this.state.selectedCountry} onChange={this.handleChange} id="movieName" className="movie-input" size="25" />
+							<button id="submitMovieBtn" className="submit-btn" onClick={this.submitCountry}>Search</button>
 						</div>
+		
 						<br></br>
 						<BaseTable columns={this.columns} data={this.state.cases} width={1000} height={400}></BaseTable>
 					</div>
