@@ -73,8 +73,7 @@ Country varchar(60),
 Date varchar(10),
 Confirmed INT,
 Deaths INT,
-Recovered INT,
-Active INT
+Recovered INT
 FORIEGN KEY(Country) REFERENCES Countries(Country)
 );
 
