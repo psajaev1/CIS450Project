@@ -114,7 +114,7 @@ export default class PennStudents extends React.Component {
 			    		{/* <div className="results-container" id="results">
 			    			{this.state.recMovies}
 			    		</div> */}
-						<BaseTable columns={this.columns} data={this.state.recMovies} width={1050} height={600}>
+						<BaseTable columns={this.columns} data={this.state.recMovies} width={1050} height={400}>
 
 						</BaseTable>
 			    	</div>
