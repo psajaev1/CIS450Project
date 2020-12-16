@@ -8,9 +8,12 @@ export default class RecommendationsRow extends React.Component {
 
 	render() {
 		return (
-			<div className="cityResults">
-				<div className="airport">{this.props.airport}</div>
+			<div className="movie">
 				<div className="city">{this.props.city}</div>
+				<div className="country">{this.props.country}</div>
+				<div className="airline">{this.props.airline}</div>
+				<div className="airport">{this.props.airport}</div>
+				<div className="code">{this.props.code}</div>
 			</div>
 		);
 	}

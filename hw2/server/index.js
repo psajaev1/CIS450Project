@@ -15,37 +15,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 
 
+app.get('/countries', routes.getAllCountries);
+	
+app.get('/countries/:selectedCountry', routes.getCountryInfo);
 
-/* ---- (Dashboard) ---- */
-// The route localhost:8081/genres is registered to the function
-// routes.getAllGenres, specified in routes.js.
-app.get('/genres', routes.getAllGenres);
-
-
-
-
-
-
-/* ---- Q1b (Dashboard) ---- */
-app.get('/genres/:genre', routes.getTopInGenre); // Hint: Replace () => {} with the appropriate route handler.
-
-
-
-
-
+app.get('/flights/:selectedCode', routes.flights);
+  
 /* ---- Q2 (Recommendations) ---- */
 app.get('/Airlines/:lowerGDP&:upperGDP', routes.getGDPCountries);
 
 
-
 // PENN STUDENTS 
 app.get('/PennStudents/:covidDeaths&:popDensity', routes.getPennStudents);
-
-
-
-
-
-
 
 app.listen(8081, () => {
 	console.log(`Server listening on PORT 8081`);

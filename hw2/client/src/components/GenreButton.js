@@ -17,7 +17,7 @@ export default class GenreButton extends React.Component {
 	render() {
 		return (
 			<div className="genre" id={this.props.id} onClick={this.props.onClick}>
-				{this.props.genre}
+				{this.props.country}
 			</div>
 		);
 	}
