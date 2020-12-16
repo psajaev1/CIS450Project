@@ -38,8 +38,12 @@ Once the user picks their city, we will output covid data for that city. That wa
 
 # Dependencies to Install
 
-``` npm install react-base-table --save ```
-``` npm install react-table --save``` 
+```
+npm install react-base-table --save 
+```
+```
+npm install react-table --save
+``` 
 
 # BUILD INSTRUCTIONS
 Create tables with the following commands and then load data with the commands that proceed.
@@ -96,9 +100,9 @@ FOREIGN KEY (sourceairportid) REFERENCES Airports(id),
 FOREIGN KEY (destinationairportid) REFERENCES Airports(id)
 );
 ```
-```
+
 Load data into tables with the following commands
-```
+
 ```
 LOAD DATA INFILE 'path_to_file/covid_df.csv' INTO TABLE covid FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\n' IGNORE 1 LINES; 
 ```
