@@ -11,27 +11,36 @@ export default class PennStudents extends React.Component {
 		// State maintained by this React component is the selected movie name,
 		// and the list of recommended movies.
 		this.state = {
-			movieName: "",
+			covidDeaths : 1000000,
+			popDensity : 0,
 			recMovies: []
 		}
 
-		this.handleMovieNameChange = this.handleMovieNameChange.bind(this);
-		this.submitMovie = this.submitMovie.bind(this);
+		this.handleCovidDeathChange = this.handleCovidDeathChange.bind(this);
+		this.handlePopDensityChange = this.handlePopDensityChange.bind(this);
+		this.pennStudents = this.pennStudents.bind(this);
 	}
 
-	handleMovieNameChange(e) {
+	handleCovidDeathChange(e) {
 		this.setState({
-			movieName: e.target.value
+			covidDeaths: e.target.value
+		});
+	}
+
+	handlePopDensityChange(e) {
+		this.setState({
+			popDensity: e.target.value
 		});
 	}
 
 	/* ---- Q2 (Recommendations) ---- */
 	// Hint: Name of movie submitted is contained in `this.state.movieName`.
-	submitMovie() {
+	pennStudents() {
 		
-	var movieTitle = this.state.movieName;
+	var cDeaths = this.state.covidDeaths;
+	var pDens = this.state.popDensity;
 
-	fetch("http://localhost:8081/recommendations/" + movieTitle, {
+	fetch("http://localhost:8081/PennStudents/" + cDeaths + "&" + pDens, {
       method: 'GET' // The type of HTTP request.
     })
       .then(res => res.json()) // Convert the response data to a JSON.
@@ -41,7 +50,7 @@ export default class PennStudents extends React.Component {
         // A button which triggers the showMovies function for each genre.
 
         let movieDivs = movieList.map((movieObj, i) =>
-           <RecommendationsRow airport={movieObj.name} city={movieObj.City}/>
+           <RecommendationsRow airport={movieObj.City} city={movieObj.Country}/>
         ); 
 
 
@@ -62,17 +71,22 @@ export default class PennStudents extends React.Component {
 
 			    <div className="container recommendations-container">
 			    	<div className="jumbotron">
-			    		<div className="h5">Recommendations</div>
+			    		<div className="h5">Nonstop Philadelphia Flight Destinations for Penn Students</div>
 			    		<br></br>
 			    		<div className="input-container">
-			    			<input type='text' placeholder="Enter City" value={this.state.movieName} onChange={this.handleMovieNameChange} id="movieName" className="movie-input"/>
-			    			<button id="submitMovieBtn" className="submit-btn" onClick={this.submitMovie}>Submit</button>
+						<input type='number' placeholder="Upper limit Covid cases" onChange={this.handleCovidDeathChange}/>
 			    		</div>
+						<input type='number' placeholder="Lower limit GDP Density" onChange={this.handlePopDensityChange} />
+						<div className="submit-container">
+						<button id="submitMovieBtn" className="submit-btn" onClick={this.pennStudents}>Submit</button>
+
+						</div>
+
 			    		<div className="header-container">
-			    			<div className="h6">Here are possible airports</div>
+			    			<div className="h6">Here are possible nonstop Destinations </div>
 			    			<div className="headers">
-			    				<div className="header"><strong>Airport</strong></div>
-			    				{/* <div className="header"><strong>City</strong></div> */}
+			    				<div className="header"><strong>Destination City</strong></div>
+			    				<div className="header"><strong>Destination Country</strong></div>
 			    			</div>
 			    		</div>
 			    		<div className="results-container" id="results">

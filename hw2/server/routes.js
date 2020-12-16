@@ -66,12 +66,20 @@ function getGDPCountries(req, res) {
 
   var query = `
     
-    SELECT DISTINCT name as tempname, AirlineID as badID
-    From airlines
-    Join countries
-    ON airlines.country = countries.country
-    WHERE countries.GDPpercapita >= ${lowerGDP} 
-    OR countries.GDPpercapita  <= ${upperGDP};
+  WITH temptable as 
+  (SELECT DISTINCT airlines.name as tempname, airlines.AirlineID as badID
+  From airlines
+  Join routes 
+  ON airlines.AirlineID = routes.airlineID
+  Join airports 
+  ON routes.destinationairportid = airports.ID
+  Join countries
+  ON airports.country = countries.country
+  WHERE countries.GDPpercapita < 15 
+  OR countries.GDPpercapita  > 25)
+  SELECT DISTINCT airlines.name as airlines_name
+  FROM airlines
+  WHERE AirlineID NOT IN (SELECT badID FROM temptable);
   `;
 
 
@@ -80,11 +88,15 @@ function getGDPCountries(req, res) {
   WITH temptable as 
   (SELECT DISTINCT name as tempname, AirlineID as badID
   From airlines
+  Join routes 
+  ON airlines.AirlineID = routes.airlineID
+  Join airports 
+  ON routes.destinationairportid = airports.ID
   Join countries
-  ON airlines.country = countries.country
-  WHERE countries.GDPpercapita < 1 
-  OR countries.GDPpercapita  > 10)
-  SELECT DISTINCT name, AirlineID 
+  ON airports.country = countries.country
+  WHERE countries.GDPpercapita < ${lowerGDP} 
+  OR countries.GDPpercapita  > ${upperGDP})
+  SELECT DISTINCT airlines.name as airlines_name
   FROM airlines
   WHERE AirlineID NOT IN (SELECT badID FROM temptable);
   
@@ -94,7 +106,7 @@ function getGDPCountries(req, res) {
   // FROM airlines
   // WHERE name NOT IN (SELECT name FROM temp_table);
 
-  connection.query(query, function(err, rows, fields) {
+  connection.query(testquery, function(err, rows, fields) {
     if (err) console.log(err);
     else {
       console.log(rows);
@@ -106,18 +118,38 @@ function getGDPCountries(req, res) {
 };
 
 /* ---- (Best Genres) ---- */
-function getDecades(req, res) {
+function getPennStudents(req, res) {
+
+  console.log("does it get to pennStudents query")
+  var covidDeaths = req.params.covidDeaths;
+  var popDensity = req.params.popDensity;
+  console.log(covidDeaths);
+  console.log(popDensity);
+
+
 	var query = `
-    SELECT DISTINCT (FLOOR(year/10)*10) AS decade
-    FROM (
-      SELECT DISTINCT release_year as year
-      FROM Movies
-      ORDER BY release_year
-    ) y
+
+  WITH temptable1 as 
+  (SELECT DISTINCT sourceairportid, destinationairportid
+  FROM routes
+  JOIN airports
+  ON routes.sourceairportid = airports.id
+  WHERE airports.city = 'Philadelphia')
+  SELECT DISTINCT airports.city as City, airports.country as Country
+  FROM airports
+  JOIN countries 
+  ON airports.country = countries.Country
+  JOIN covid
+  ON countries.Country = covid.Country
+  WHERE countries.PopDensity > ${popDensity} 
+  AND covid.Date = "2020-07-27"
+  AND covid.Confirmed < ${covidDeaths};
   `;
   connection.query(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
+      console.log(rows);
+      console.log("querying rows now");
       res.json(rows);
     }
   });
@@ -169,6 +201,6 @@ module.exports = {
 	getAllGenres: getAllGenres,
 	getTopInGenre: getTopInGenre,
 	getGDPCountries: getGDPCountries,
-	getDecades: getDecades,
+	getPennStudents: getPennStudents,
   bestGenresPerDecade: bestGenresPerDecade
 }

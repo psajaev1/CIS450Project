@@ -38,18 +38,8 @@ app.get('/Airlines/:lowerGDP&:upperGDP', routes.getGDPCountries);
 
 
 
-
-
-/* ---- (Best Genre) ---- */
-app.get('/bestgenres', routes.getDecades);
-
-
-
-
-
-
-/* ---- Q3b (Best Genre) ---- */
-app.get('/bestgenres/:decade', routes.bestGenresPerDecade);
+// PENN STUDENTS 
+app.get('/PennStudents/:covidDeaths&:popDensity', routes.getPennStudents);
 
 
 
