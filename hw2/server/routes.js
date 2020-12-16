@@ -76,49 +76,36 @@ function getGDPCountries(req, res) {
   console.log(upperGDP);
 
 
+
   var query = `
-    
-  WITH temptable as 
-  (SELECT DISTINCT airlines.name as tempname, airlines.AirlineID as badID
-  From airlines
-  Join routes 
-  ON airlines.AirlineID = routes.airlineID
-  Join airports 
-  ON routes.destinationairportid = airports.ID
-  Join countries
-  ON airports.country = countries.country
-  WHERE countries.GDPpercapita < 15 
-  OR countries.GDPpercapita  > 25)
-  SELECT DISTINCT airlines.name as airlines_name
-  FROM airlines
-  WHERE AirlineID NOT IN (SELECT badID FROM temptable);
+  WITH RelevantAirlines AS (
+  SELECT DISTINCT routes.airlineID AS ID, airlines.Name AS Name, routes.sourceairportid AS SourceID, routes.destinationairportid AS DestID
+  FROM routes
+  JOIN airlines ON routes.airlineID = airlines.AirlineID
+  WHERE routes.sourceairportid IN (
+  SELECT airports.id
+  FROM countries 
+  JOIN airports ON replace(airports.country,' ', '') = countries.country
+  WHERE countries.GDP_per_capita >= ${lowerGDP} AND countries.GDP_per_capita <= ${upperGDP}) AND 
+  routes.destinationairportid IN (
+  SELECT airports.id
+  FROM countries 
+  JOIN airports ON replace(airports.country,' ', '') = countries.country
+  WHERE countries.GDP_per_capita >= ${lowerGDP} AND countries.GDP_per_capita <= ${upperGDP})),
+
+  SourceCountries AS (
+  SELECT RelevantAirlines.ID, RelevantAirlines.Name, airports.country AS SourceCountry, RelevantAirlines.DestID
+  FROM RelevantAirlines
+  JOIN airports ON airports.ID = RelevantAirlines.SourceID)
+
+  SELECT Distinct SourceCountries.ID AS id, SourceCountries.Name as name, SourceCountries.SourceCountry AS SCountry, airports.country AS DCountry
+  FROM SourceCountries
+  JOIN airports ON airports.ID = SourceCountries.DestID;
+
   `;
 
 
-
-  var testquery = `
-  WITH temptable as 
-  (SELECT DISTINCT name as tempname, AirlineID as badID
-  From airlines
-  Join routes 
-  ON airlines.AirlineID = routes.airlineID
-  Join airports 
-  ON routes.destinationairportid = airports.ID
-  Join countries
-  ON airports.country = countries.country
-  WHERE countries.GDPpercapita < ${lowerGDP} 
-  OR countries.GDPpercapita  > ${upperGDP})
-  SELECT DISTINCT airlines.name as airlines_name
-  FROM airlines
-  WHERE AirlineID NOT IN (SELECT badID FROM temptable);
-  
-  `;
-
-  // SELECT DISTINCT name 
-  // FROM airlines
-  // WHERE name NOT IN (SELECT name FROM temp_table);
-
-  connection.query(testquery, function(err, rows, fields) {
+  connection.query(query, function(err, rows, fields) {
     if (err) console.log(err);
     else {
       console.log(rows);
@@ -129,46 +116,12 @@ function getGDPCountries(req, res) {
 
 };
 
-/* ---- (Penn Students) ---- */
-function getPennStudents(req, res) {
 
-  console.log("does it get to pennStudents query")
-  var popDensity = req.params.popDensity;
-
-
-	var query = `
-
-  WITH temptable1 as 
-  (SELECT DISTINCT sourceairportid, destinationairportid
-  FROM routes
-  JOIN airports
-  ON routes.sourceairportid = airports.id
-  WHERE airports.city = 'Philadelphia'),
-  temptable2 as 
-  (SELECT DISTINCT airports.city as City, airports.country as Country, ID
-  FROM airports
-  JOIN countries
-  ON REPLACE(airports.country, ' ', '') = REPLACE(countries.Country, ' ', '')
-  WHERE countries.PopDensity > '${popDensity}')
-  SELECT * FROM temptable2 
-  WHERE temptable2.ID IN (SELECT destinationairportid FROM temptable1);
-  `;
-  connection.query(query, function(err, rows, fields) {
-    if (err) console.log(err);
-    else {
-      console.log(rows);
-      console.log("querying rows now");
-      res.json(rows);
-    }
-  });
-}
 
 // The exported functions, which can be accessed in index.js.
 module.exports = {
-
   getAllCountries: getAllCountries,
   getCountryInfo: getCountryInfo,
  	getGDPCountries: getGDPCountries,
-  getPennStudents: getPennStudents,
   flights: flights
 }
