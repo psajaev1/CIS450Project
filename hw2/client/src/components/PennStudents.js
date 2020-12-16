@@ -3,10 +3,36 @@ import PageNavbar from './PageNavbar';
 import RecommendationsRow from './RecommendationsRow';
 import '../style/Recommendations.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import BaseTable, { Column } from 'react-base-table'
+import 'react-base-table/styles.css'
+
+
 
 export default class PennStudents extends React.Component {
 	constructor(props) {
 		super(props);
+
+
+
+		this.columns = [
+			{
+			  key: 'City',
+			  title: 'Destination City',
+			  dataKey: 'City',
+			  width: 600,
+			  resizable: true,
+			  sortable: true,
+			  frozen: Column.Alignment.CENTER,
+			},
+			{
+			  key: 'Country',
+			  title: 'Destination Country',
+			  dataKey: 'Country',
+			  width: 600,
+			  align: Column.Alignment.CENTER,
+			  sortable: false,
+			}
+		  ]
 
 		// State maintained by this React component is the selected movie name,
 		// and the list of recommended movies.
@@ -48,14 +74,14 @@ export default class PennStudents extends React.Component {
         // Map each genreObj in genreList to an HTML element:
         // A button which triggers the showMovies function for each genre.
 
-        let movieDivs = movieList.map((movieObj, i) =>
-           <RecommendationsRow airport={movieObj.City} city={movieObj.Country}/>
-        ); 
+        // let movieDivs = movieList.map((movieObj, i) =>
+        //    <RecommendationsRow airport={movieObj.City} city={movieObj.Country}/>
+        // ); 
 
 
         // Set the state of the genres list to the value returned by the HTTP response from the server.
         this.setState({
-          recMovies: movieDivs
+          recMovies: movieList
         })
       })
       .catch(err => console.log(err)) // Print the error if there is one.
@@ -83,13 +109,14 @@ export default class PennStudents extends React.Component {
 			    		<div className="header-container">
 			    			<div className="h6">Here are possible nonstop Destinations </div>
 			    			<div className="headers">
-			    				<div className="header"><strong>Destination City</strong></div>
-			    				<div className="header"><strong>Destination Country</strong></div>
 			    			</div>
 			    		</div>
-			    		<div className="results-container" id="results">
+			    		{/* <div className="results-container" id="results">
 			    			{this.state.recMovies}
-			    		</div>
+			    		</div> */}
+						<BaseTable columns={this.columns} data={this.state.recMovies} width={1050} height={600}>
+
+						</BaseTable>
 			    	</div>
 			    </div>
 		    </div>
