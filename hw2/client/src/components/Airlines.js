@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PageNavbar from './PageNavbar';
-import RecommendationsRow from './RecommendationsRow';
+import RecommendationsRow from './AirlinesRow';
 import '../style/Recommendations.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -57,12 +57,12 @@ export default class Airlines extends React.Component {
         // A button which triggers the showMovies function for each genre.
 
         let movieDivs = movieList.map((movieObj, i) =>
-           <RecommendationsRow airport={movieObj.tempname} city={movieObj.badID}/>
+            <RecommendationsRow name={movieObj.name} id={movieObj.id} SCountry={movieObj.SCountry} DCountry={movieObj.DCountry}/>
         ); 
 
-				let movieDivs = movieList.map((movieObj, i) =>
-					<RecommendationsRow airport={movieObj.name} city={movieObj.City} />
-				);
+				// movieDivs = movieList.map((movieObj, i) =>
+				// 	<RecommendationsRow airport={movieObj.name} city={movieObj.City} />
+				// );
 
 
 				// Set the state of the genres list to the value returned by the HTTP response from the server.
@@ -75,7 +75,6 @@ export default class Airlines extends React.Component {
 
 
 	render() {
-
 		return (
 			<div className="Airlines">
 				<PageNavbar active="Airlines" />
@@ -96,6 +95,8 @@ export default class Airlines extends React.Component {
 			    			<div className="headers">
 			    				<div className="header"><strong>Airline</strong></div>
 			    				<div className="header"><strong>AirlineID</strong></div>
+			    				<div className="header"><strong>Source</strong></div>
+			    				<div className="header"><strong>Destination</strong></div>
 			    			</div>
 			    		</div>
 			    		<div className="results-container" id="results">
