@@ -133,10 +133,7 @@ function getGDPCountries(req, res) {
 function getPennStudents(req, res) {
 
   console.log("does it get to pennStudents query")
-  var covidDeaths = req.params.covidDeaths;
   var popDensity = req.params.popDensity;
-  console.log(covidDeaths);
-  console.log(popDensity);
 
 
 	var query = `
@@ -146,16 +143,15 @@ function getPennStudents(req, res) {
   FROM routes
   JOIN airports
   ON routes.sourceairportid = airports.id
-  WHERE airports.city = 'Philadelphia')
-  SELECT DISTINCT airports.city as City, airports.country as Country
+  WHERE airports.city = 'Philadelphia'),
+  temptable2 as 
+  (SELECT DISTINCT airports.city as City, airports.country as Country, ID
   FROM airports
-  JOIN countries 
-  ON airports.country = countries.Country
-  JOIN covid
-  ON countries.Country = covid.Country
-  WHERE countries.PopDensity > ${popDensity} 
-  AND covid.Date = "2020-07-27"
-  AND covid.Confirmed < ${covidDeaths};
+  JOIN countries
+  ON REPLACE(airports.country, ' ', '') = REPLACE(countries.Country, ' ', '')
+  WHERE countries.PopDensity > '${popDensity}')
+  SELECT * FROM temptable2 
+  WHERE temptable2.ID IN (SELECT destinationairportid FROM temptable1);
   `;
   connection.query(query, function(err, rows, fields) {
     if (err) console.log(err);
