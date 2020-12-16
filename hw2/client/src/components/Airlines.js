@@ -3,6 +3,9 @@ import PageNavbar from './PageNavbar';
 import RecommendationsRow from './AirlinesRow';
 import '../style/Recommendations.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import ReactTable from 'react-table';
+import BaseTable, { Column } from 'react-base-table'
+import 'react-base-table/styles.css'
 
 
 export default class Airlines extends React.Component {
@@ -20,6 +23,45 @@ export default class Airlines extends React.Component {
 		this.handlelowerGDPChange = this.handlelowerGDPChange.bind(this);
 		this.handleupperGDPChange = this.handleupperGDPChange.bind(this);
 		this.submitGDP = this.submitGDP.bind(this);
+
+		this.columns = [
+		{
+			key: 'id',
+			title: 'AirlineID',
+			dataKey: 'id',
+			width:600,
+			resizable: true,
+			sortable: true,
+			frozen: Column.Alignment.CENTER,
+		},
+		{
+			key: 'name',
+			title: 'Airline Name',
+			dataKey: 'name',
+			width:600,
+			resizable: true,
+			sortable: true,
+			frozen: Column.Alignment.CENTER,
+		},
+		{
+			key: 'SCountry',
+			title: 'Source',
+			dataKey: 'SCountry',
+			width:600,
+			resizable: true,
+			sortable: true,
+			frozen: Column.Alignment.CENTER,
+		},
+		{
+			key: 'DCountry',
+			title: 'Destination',
+			dataKey: 'DCountry',
+			width:600,
+			resizable: true,
+			sortable: true,
+			frozen: Column.Alignment.CENTER,
+		}
+		]
 
 	}
 
@@ -51,30 +93,31 @@ export default class Airlines extends React.Component {
     })
       .then(res => res.json()) // Convert the response data to a JSON.
       .then(movieList => {
-		console.log("hit the json values");
-        if (!movieList) return;
-        // Map each genreObj in genreList to an HTML element:
-        // A button which triggers the showMovies function for each genre.
+      	this.setState({
+					recMovies: movieList
+				});})}
+ //        if (!movieList) return;
+ //        // Map each genreObj in genreList to an HTML element:
+ //        // A button which triggers the showMovies function for each genre.
+ //        let movieDivs = movieList.map((movieObj, i) =>
+ //            <RecommendationsRow  name={movieObj.name} id={movieObj.id} SCountry={movieObj.SCountry} DCountry={movieObj.DCountry}/>
+ //        ); 
 
-        let movieDivs = movieList.map((movieObj, i) =>
-            <RecommendationsRow name={movieObj.name} id={movieObj.id} SCountry={movieObj.SCountry} DCountry={movieObj.DCountry}/>
-        ); 
-
-				// movieDivs = movieList.map((movieObj, i) =>
-				// 	<RecommendationsRow airport={movieObj.name} city={movieObj.City} />
-				// );
-
-
-				// Set the state of the genres list to the value returned by the HTTP response from the server.
-				this.setState({
-					recMovies: movieDivs
-				})
-			})
-			.catch(err => console.log(err)) // Print the error if there is one.
-	}
+	// 			// movieDivs = movieList.map((movieObj, i) =>
+	// 			// 	<RecommendationsRow airport={movieObj.name} city={movieObj.City} />
+	// 			// );
 
 
-	render() {
+	// 			// Set the state of the genres list to the value returned by the HTTP response from the server.
+	// 			this.setState({
+	// 				recMovies: movieDivs
+	// 			})
+	// 		})
+	// 		.catch(err => console.log(err)) // Print the error if there is one.
+	// }
+
+
+render() {
 		return (
 			<div className="Airlines">
 				<PageNavbar active="Airlines" />
@@ -90,21 +133,47 @@ export default class Airlines extends React.Component {
 						<button id="submitMovieBtn" className="submit-btn" onClick={this.submitGDP}>Submit</button>
 						</div>
 
-			    		<div className="header-container">
-			    			<div className="h6">Here are possible airports</div>
-			    			<div className="headers">
-			    				<div className="header"><strong>Airline</strong></div>
-			    				<div className="header"><strong>AirlineID</strong></div>
-			    				<div className="header"><strong>Source</strong></div>
-			    				<div className="header"><strong>Destination</strong></div>
-			    			</div>
-			    		</div>
-			    		<div className="results-container" id="results">
-			    			{this.state.recMovies}
-			    		</div>
+			    		<BaseTable columns={this.columns} data={this.state.recMovies} width={1000} height={400}>
+			    		</BaseTable>
 			    	</div>
 			    </div>
 		    </div>
 		);
 	}
 }
+
+
+// 	render() {
+// 		return (
+// 			<div className="Airlines">
+// 				<PageNavbar active="Airlines" />
+// 			    <div className="container recommendations-container">
+// 			    	<div className="jumbotron">
+// 			    		<div className="h5">Airlines</div>
+// 			    		<br></br>
+// 			    		<div className="input-container">
+// 			    			<input type='number' placeholder="Enter Lower Limit GDP" onChange={this.handlelowerGDPChange} id="lowerGDP" />
+// 							<input type='number' placeholder="Enter Upper Limit GDP" onChange={this.handleupperGDPChange} id="upperGDP" />
+// 			    		</div>
+// 						<div>
+// 						<button id="submitMovieBtn" className="submit-btn" onClick={this.submitGDP}>Submit</button>
+// 						</div>
+
+// 			    		<div className="header-container">
+// 			    			<div className="h6">Here are possible airports</div>
+// 			    			<div className="headers">
+// 			    				<div className="header"><strong>Airline</strong></div>
+// 			    				<div className="header"><strong>AirlineID</strong></div>
+// 			    				<div className="header"><strong>Source</strong></div>
+// 			    				<div className="header"><strong>Destination</strong></div>
+// 			    			</div>
+// 			    		</div>
+// 			    		<div className="results-container" id="results">
+// 			    			{this.state.recMovies}
+// 			    		</div>
+// 			    	</div>
+// 			    </div>
+// 		    </div>
+// 		);
+// 	}
+// }
