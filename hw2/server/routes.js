@@ -49,15 +49,18 @@ function flights(req, res) {
 
   //airline, country, city, name, iata
 
+//.05
   var query = `
       SELECT X.name AS airline, Y.country, Y.city, Y.name, Y.iata 
-      FROM routes R, airports A, airlines X, airports Y
+      FROM routes R 
+      JOIN airports A ON A.id = R.sourceairportid
+      JOIN airlines X ON R.airlineID = X.Airlineid
+      JOIN airports Y ON R.destinationairportid = Y.ID
       WHERE A.iata = '${selectedCode}'
-      AND A.id = R.sourceairportid
-      AND R.airlineID = X.Airlineid
-      AND R.destinationairportid = Y.ID
       ORDER BY city
   `;
+
+
 
   connection.query(query, function (err, rows, fields) {
     if (err) console.log(err);
@@ -77,6 +80,10 @@ function getGDPCountries(req, res) {
 
 
 
+
+
+
+//.14
   var query = `
   WITH RelevantAirlines AS (
   SELECT DISTINCT routes.airlineID AS ID, airlines.Name AS Name, routes.sourceairportid AS SourceID, routes.destinationairportid AS DestID
@@ -137,10 +144,11 @@ function getPennStudents(req, res) {
   FROM airports 
   JOIN countries  
   ON REPLACE(airports.country, ' ', '') = REPLACE(countries.Country, ' ', '') 
-  WHERE countries.Pop_density > '${popDensity}') 
+  WHERE countries.Pop_density > ${popDensity}) 
   SELECT * FROM temptable2  
   WHERE temptable2.ID IN (SELECT destinationairportid FROM temptable1); 
   `;  
+
   connection.query(query, function(err, rows, fields) { 
     if (err) console.log(err);  
     else {  
@@ -157,6 +165,19 @@ function getCOVIDCases(req, res) {
 	var airportCode = req.params.selectedCountry;
 
 
+
+//.03
+// SELECT DISTINCT COVID.Country AS Country, Date AS Date, SUM(Confirmed) AS Confirmed, SUM(Deaths) AS Deaths
+// FROM covid, airports
+// WHERE airports.iata = 'BFS'
+// AND replace(airports.Country, ' ', '') = covid.Country 
+// GROUP BY LEFT(Date, 1);
+
+
+
+
+
+//.04
 	var query = `
 
 		WITH SelectedCountry AS (
