@@ -137,7 +137,7 @@ function getPennStudents(req, res) {
   FROM airports 
   JOIN countries  
   ON REPLACE(airports.country, ' ', '') = REPLACE(countries.Country, ' ', '') 
-  WHERE countries.PopDensity > '${popDensity}') 
+  WHERE countries.Pop_density > '${popDensity}') 
   SELECT * FROM temptable2  
   WHERE temptable2.ID IN (SELECT destinationairportid FROM temptable1); 
   `;  
